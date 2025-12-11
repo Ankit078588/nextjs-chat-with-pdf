@@ -3,6 +3,28 @@
 > Please be patient 😊
 
 
+---
+
+## 🛠️ Tech Stack
+
+| Category | Technology |
+| :--- | :--- |
+| **Framework** | Next.js 16 (App Router) |
+| **Language** | TypeScript |
+| **Styling** | Tailwind CSS, Lucide React, Sonner (Toast) |
+| **AI Framework** | LangChain.js |
+| **LLM / Embeddings** | Google Gemini (GenAI) |
+| **Vector Database** | PineconeDB |
+| **Primary Database** | MongoDB (via Mongoose) |
+| **File Storage** | AWS S3 (Private Bucket) |
+| **Authentication** | NextAuth.js |
+| **Deployment** | Vercel |
+| **CI/CD** | Vercel |
+
+---
+
+
+
 # 📄 ChatDoc – AI-Powered PDF Assistant
 
 [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)  
@@ -40,23 +62,6 @@
   - **MongoDB:** Manages structured data like User profiles, Chat history, and Document metadata.
   - **Pinecone:** Manages unstructured vector data for AI retrieval.
 - **Edge-Ready:** Built on **Next.js**, leveraging server-side rendering and API routes for optimal performance.
-
----
-
-## 🛠️ Tech Stack
-
-| Category | Technology |
-| :--- | :--- |
-| **Framework** | Next.js 14 (App Router) |
-| **Language** | TypeScript |
-| **Styling** | Tailwind CSS, Lucide React, Sonner (Toast) |
-| **AI Framework** | LangChain.js |
-| **LLM / Embeddings** | Google Gemini (GenAI) |
-| **Vector Database** | PineconeDB |
-| **Primary Database** | MongoDB (via Mongoose) |
-| **File Storage** | AWS S3 (Private Bucket) |
-| **Authentication** | NextAuth.js |
-| **Deployment** | Vercel |
 
 ---
 
