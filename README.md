@@ -1,7 +1,3 @@
-> ⚠️ **Note:**  
-> Since we are using the **free-tier Pinecone database**, vector search might be slow at times.  
-> Please be patient 😊
-
 
 ---
 
@@ -31,6 +27,10 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-Blue)](https://www.typescriptlang.org/)  
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC)](https://tailwindcss.com/)  
 [![LangChain](https://img.shields.io/badge/LangChain-RAG-green)](https://js.langchain.com/)
+
+> ⚠️ **Note:**  
+> Since we are using the **free-tier Pinecone database**, vector search might be slow at times.  
+> Please be patient 😊
 
 **Live Demo:** [https://nextjs-chat-with-pdf.vercel.app/](https://nextjs-chat-with-pdf.vercel.app/)
 
