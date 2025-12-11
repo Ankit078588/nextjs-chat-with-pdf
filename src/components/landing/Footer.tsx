@@ -1,5 +1,4 @@
 import React from 'react';
-import { MessageSquareText, Github, Twitter, Linkedin } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (

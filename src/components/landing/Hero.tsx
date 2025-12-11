@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ArrowRight, FileText, Sparkles, Upload } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import GithubIcon from "@/icons/github";
 
