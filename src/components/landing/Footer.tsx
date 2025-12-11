@@ -13,8 +13,8 @@ export const Footer: React.FC = () => {
           
           <div className="flex items-center gap-8">
              <span>Developed by <b className="text-slate-900">Ankit Kumar</b></span>
-             <a href="https://github.com/your-username" target="_blank" className="hover:text-indigo-600 transition-colors">GitHub</a>
-             <a href="https://linkedin.com/in/your-profile" target="_blank" className="hover:text-indigo-600 transition-colors">LinkedIn</a>
+             <a href="https://github.com/Ankit078588/nextjs-chat-with-pdf" target="_blank" className="hover:text-indigo-600 transition-colors">GitHub</a>
+             <a href="https://www.linkedin.com/in/ankit-kumar-353b72319/" target="_blank" className="hover:text-indigo-600 transition-colors">LinkedIn</a>
           </div>
 
         </div>
