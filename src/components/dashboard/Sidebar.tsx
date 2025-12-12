@@ -33,10 +33,10 @@ export function Sidebar({user} : SidebarProps) {
     <aside className="w-64 bg-slate-900 text-slate-300 flex flex-col shadow-xl h-screen flex-shrink-0">
       {/* 1. Logo Area */}
       <div className="p-6 border-b border-slate-800">
-        <div className="flex items-center gap-2 text-white">
-          <div className="h-8 w-8 bg-indigo-500 rounded-lg flex items-center justify-center font-bold">C</div>
-          <span className="text-xl font-bold tracking-tight">ChatDoc</span>
-        </div>
+        <Link href={'/'} className="flex items-center gap-2 text-white">
+            <span className="h-8 w-8 bg-indigo-500 rounded-lg flex items-center justify-center font-bold">C</span>
+            <span className="text-xl font-bold tracking-tight">ChatDoc</span>
+        </Link>
       </div>
 
       {/* 2. Navigation Links */}
