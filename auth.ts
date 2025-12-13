@@ -1,7 +1,9 @@
-import NextAuth from "next-auth"
-import Google from "next-auth/providers/google"
-import GitHub from "next-auth/providers/github"
-import Credentials from "next-auth/providers/credentials"
+import NextAuth from "next-auth";
+import Google from "next-auth/providers/google";
+import GitHub from "next-auth/providers/github";
+import Credentials from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
+
 
 import { connectDB } from "./src/lib/db";
 import { UserModel } from "./src/models/user.model";
@@ -14,15 +16,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         try {
           // get form input values
           const {email, password} = credentials;
-          if(!email || !password) return null;                 // throw new Error('All fields are required.')
+          if(!email || !password) return null; 
+
+          console.log('-----');
+          console.log(email, password);
   
           // connectDB
           await connectDB();
           const user = await UserModel.findOne({email});
-          if(!user) return null;                               // throw new Error('Incorrect credentials.');
-  
-          // check password
-          if(user.password !== password) return null;          // throw new Error('Incorrect credentials.')
+          if (!user || !user.password) return null;
+
+          // bcrypt password check
+          const isMatch = await bcrypt.compare(password as string, user.password);
+          console.log(isMatch);
+          if (!isMatch) return null;
   
           // Return user object (NextAuth will store in session)
           return { 
@@ -37,7 +44,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
       }
     })],
-    session: { strategy: "jwt", maxAge: 7*24*60*60 },                  // 7 days
+    session: { strategy: "jwt", maxAge: 7*24*60*60 }, 
     callbacks: {
       async signIn({user, account}) {
         try {
