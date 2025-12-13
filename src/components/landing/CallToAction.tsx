@@ -18,7 +18,7 @@ const CallToAction = () => {
                     Join thousands of students and professionals who use ChatDoc to learn faster and work smarter.
                 </p>
                 <div className="pt-4">
-                    <Link href="/login" className="inline-flex items-center gap-2 bg-white text-slate-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-indigo-50 transition-colors">
+                    <Link href="/dashboard" className="inline-flex items-center gap-2 bg-white text-slate-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-indigo-50 transition-colors">
                         Get Started Now
                     </Link>
                 </div>
