@@ -70,30 +70,27 @@ export function Header({ title, subtitle, showUploadBtn, onUploadSuccess, user_n
 
   return (
     
-    <header className="px-8 py-6 flex items-center justify-between sticky top-0 bg-slate-50/90 backdrop-blur-sm z-10">
+    <header className="px-3 sm:px-8 py-6 flex flex-col sm:flex-row items-center justify-between sticky top-0 bg-slate-50/90 z-10">
       <div>
         {user_name? 
-          (<h1 className="text-2xl font-bold text-slate-800">Hello {user_name}, {title}</h1>)
+          (<h1 className="text-2xl font-bold text-slate-800 text-center sm:text-left">Hello {user_name}, {title}</h1>)
           :
-          (<h1 className="text-2xl font-bold text-slate-800">{title}</h1>)
+          (<h1 className="text-2xl font-bold text-slate-800 text-center sm:text-left">{title}</h1>)
         }
-        <p className="text-slate-500 text-sm mt-1">{subtitle}</p>
+        <p className="text-slate-500 text-sm mt-1 text-center sm:text-left">{subtitle}</p>
       </div>
 
       {showUploadBtn && (
-        <>
-          <label className="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-lg flex items-center gap-2 font-medium shadow-lg hover:shadow-xl transition-all active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer">
-            {isUploading ? 
-              ( <> <Loader2 size={18} className="animate-spin" /> Uploading... </> ) 
-              : 
-              ( <> <Plus size={18} /> Upload New Document </> )
-            }
+        <label className={`mt-2 sm:mt-0 bg-slate-90 w-fit bg-slate-800 text-white px-5 py-2.5 rounded-lg flex items-center font-medium shadow-lg hover:shadow-xl transition-all active:scale-95 ${isUploading? 'disabled cursor-not-allowed opacity-70':'cursor-pointer'}`}>
+          {isUploading ? 
+            ( <> <Loader2 size={18} className="animate-spin" /> Uploading... </> ) 
+            : 
+            ( <> <Plus size={18} /> Upload New Document </> )
+          }
             
-            {/* Hidden Input */}
-            <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="application/pdf" className="hidden" />
-          </label>
-
-        </>
+          {/* Hidden Input */}
+          <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="application/pdf" className="hidden" />
+        </label>
       )}
     </header>
   );
