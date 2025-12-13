@@ -48,8 +48,8 @@ export const Hero: React.FC = () => {
               Get Started Free <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </Link>
             
-            <a target="_blank" href="https://nextjs-chat-with-pdf.vercel.app" className="w-full sm:w-auto px-10 py-4 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-full font-bold text-lg transition-all flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-slate-200/50">
-              <GithubIcon /> Rate on Github
+            <a target="_blank" href="https://github.com/Ankit078588/nextjs-chat-with-pdf" className="w-full sm:w-auto px-10 py-4 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-full font-bold text-lg transition-all flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-slate-200/50">
+              <GithubIcon /> Star on Github
             </a>
           </div>
 
