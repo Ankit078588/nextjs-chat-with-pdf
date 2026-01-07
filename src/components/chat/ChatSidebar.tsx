@@ -15,6 +15,8 @@ interface ChatSession {
 interface ChatSidebarProps {
   docId: string; 
 }
+const chatListCache = new Map<string, ChatSession[]>();
+
 
 export function ChatSidebar({ docId }: ChatSidebarProps) {
   const router = useRouter();
@@ -22,25 +24,29 @@ export function ChatSidebar({ docId }: ChatSidebarProps) {
   
   const currentChatId = params?.id as string; 
 
-  const [chats, setChats] = useState<ChatSession[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [chats, setChats] = useState<ChatSession[]>(() => {
+    return chatListCache.get(docId) || [];
+  });
+  const [loading, setLoading] = useState(() => !chatListCache.has(docId));  
   const [creating, setCreating] = useState(false);
-
 
   useEffect(() => {
     const loadChatList = async () => {
       if (!docId) return; 
+      if (!chatListCache.has(docId)) {
+        setLoading(true);
+      }
 
       try {
-        setLoading(true);
         const res = await fetch(`/api/chat/list?docId=${docId}`);
         const data = await res.json();
 
         if (data.chats) {
             setChats(data.chats);
+            chatListCache.set(docId, data.chats);
         }
       } catch (error) {
-        toast.error("Failed to load chat history");
+        console.error(error);
       } finally {
         setLoading(false);
       }
@@ -48,7 +54,6 @@ export function ChatSidebar({ docId }: ChatSidebarProps) {
 
     loadChatList();
   }, [docId]); 
-  
 
   const handleNewChat = async () => {
     if (creating) return;
@@ -67,7 +72,10 @@ export function ChatSidebar({ docId }: ChatSidebarProps) {
 
       if (res.ok) {
         router.push(`/chat/${data.chatId}`); 
-        setChats([{ _id: data.chatId, title: data.title, createdAt: "" }, ...chats]);
+        
+        const newChatList = [{ _id: data.chatId, title: data.title, createdAt: "" }, ...chats];
+        setChats(newChatList);
+        chatListCache.set(docId, newChatList);
       } else {
         throw new Error(data.error || "Failed to create");
       }
@@ -84,8 +92,8 @@ export function ChatSidebar({ docId }: ChatSidebarProps) {
        {/* 1. Logo */}
        <div className="px-1 min-h-[55px] flex items-center">
         <div className="px-[9px] flex items-center">
-            <Link href='/dashboard'  className="bg-[#4f39f6] font-extrabold text-lg text-white rounded-lg py-1 px-3 mr-2">C</Link>
-            <Link href='/dashboard'  className="text-xl text-gray-900 font-extrabold">ChatDoc</Link>
+            <Link href='/dashboard' className="bg-[#4f39f6] font-extrabold text-lg text-white rounded-lg py-1 px-3 mr-2">C</Link>
+            <Link href='/dashboard' className="text-xl text-gray-900 font-extrabold">ChatDoc</Link>
         </div>
       </div>
       <div>
@@ -96,7 +104,7 @@ export function ChatSidebar({ docId }: ChatSidebarProps) {
       <div className="px-2 py-3">
         <button
           onClick={handleNewChat}
-          disabled={creating || loading}
+          disabled={creating || (loading && chats.length === 0)}
           className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white transition-colors cursor-pointer bg-gray-600 rounded-lg hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {creating ? <Loader2 className="w-4 h-4 animate-spin"/> : <PlusCircle className="w-4 h-4"/>}
@@ -106,7 +114,7 @@ export function ChatSidebar({ docId }: ChatSidebarProps) {
 
       {/* 3. Chat List Section */}
       <div className="flex-1 overflow-y-auto p-2 mt-2">
-        {loading ? (
+        {loading && chats.length === 0 ? (
            <div className="flex justify-center p-4"><Loader2 className="w-5 h-5 animate-spin text-slate-400"/></div>
         ) : (
           chats.map((chat) => (
@@ -114,7 +122,7 @@ export function ChatSidebar({ docId }: ChatSidebarProps) {
               key={chat._id}
               title={chat.title}
               isActive={currentChatId === chat._id}
-              onClick={() => router.push(`/chat/${chat._id}`)}
+              chatId={chat._id}
             />
           ))
         )}

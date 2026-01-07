@@ -1,17 +1,17 @@
 "use client";
+import Link from "next/link";
 import { MessageSquare } from "lucide-react";
 
 interface ChatSidebarItemProps {
   title: string;
   isActive: boolean;
-  onClick: () => void;
+  chatId: string;
 }
 
-export function ChatSidebarItem({ title, isActive, onClick }: ChatSidebarItemProps) {
+export function ChatSidebarItem({ title, isActive, chatId }: ChatSidebarItemProps) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
+    <Link
+      href={`/chat/${chatId}`}
       className={`
         relative group flex items-center w-full px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 ease-in-out mb-1 text-left
         ${
@@ -34,10 +34,10 @@ export function ChatSidebarItem({ title, isActive, onClick }: ChatSidebarItemPro
         {title}
       </span>
 
-      {/* Active Indicator Dot */}
+      {/* Active Dot */}
       {isActive && (
         <div className="w-1.5 h-1.5 rounded-full bg-indigo-600 ml-2 shrink-0 animate-in fade-in zoom-in" />
       )}
-    </button>
+    </Link>
   );
 }
