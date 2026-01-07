@@ -1,10 +1,9 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Header } from "@/components/dashboard/Header";
 import { DocumentCard } from "@/components/dashboard/DocumentCard";
-import { Loader2, MessageSquareDashed } from "lucide-react"; // Empty state icon change kiya
+import { Loader2, MessageSquareDashed } from "lucide-react";
 import { toast } from "sonner";
 
 interface DocType {
@@ -19,8 +18,11 @@ export default function StartChatPage() {
   const router = useRouter();
   const [documents, setDocuments] = useState<DocType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  
+  // State for tracking which specific card is loading 
+  const [loadingDocId, setLoadingDocId] = useState<string | null>(null);
 
-  // Fetch Documents 
+  // Fetch documents 
   useEffect(() => {
     const fetchDocs = async () => {
       try {
@@ -41,6 +43,28 @@ export default function StartChatPage() {
 
     fetchDocs();
   }, []);
+
+  // Start chatting
+  const handleStartChat = async (docId: string) => {
+    try {
+        setLoadingDocId(docId); 
+        const res = await fetch("/api/chat/create", {
+            method: "POST",
+            body: JSON.stringify({ 
+                docId, 
+                forceNew: false 
+            }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+
+        router.push(`/chat/${data.chatId}`);
+    } catch (error) {
+        toast.error("Could not start chat session");
+        setLoadingDocId(null);
+    }
+  };
 
   return (
     <>
@@ -79,11 +103,14 @@ export default function StartChatPage() {
             {documents.map((doc) => (
               <DocumentCard 
                 key={doc._id}
-                id={doc._id}
+                id={doc._id} 
                 name={doc.name}
                 size={doc.size}
                 date={new Date(doc.createdAt).toLocaleDateString()}
-                variant="chat"  
+                variant="chat"
+
+                onStartChat={handleStartChat}
+                isStartingChat={loadingDocId === doc._id}
               />
             ))}
           </div>

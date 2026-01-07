@@ -6,7 +6,7 @@ const DocumentSchema = new Schema({
     name: { type: String, required: true, trim: true },
     fileUrl: { type: String, required: true },           // S3 Public URL
     fileKey: { type: String, required: true },           // AWS S3 Key (e.g. "uploads/170923_file.pdf")
-    size: { type: String,  required: true }              // e.g., "2.5 MB"
+    size: { type: String,  required: true }              // e.g. 2.5 MB
 }, { timestamps: true });
 
 

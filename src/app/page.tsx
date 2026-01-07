@@ -1,10 +1,10 @@
 import CallToAction from "@/components/landing/CallToAction";
-import { Footer } from "@/components/landing/Footer";
-import { HowItWorks } from "@/components/landing/HowItWorks";
+import Footer from "@/components/landing/Footer";
+import HowItWorks from "@/components/landing/HowItWorks";
 import ValueProposition from "@/components/landing/ValueProposition";
 import Mockup from "@/components/landing/Mockup";
 import Navbar from "@/components/ui/Navbar";
-import { Hero } from "@/components/landing/Hero";
+import Hero from "@/components/landing/Hero";
 
 
 

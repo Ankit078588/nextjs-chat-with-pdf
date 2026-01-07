@@ -22,9 +22,19 @@ export function Header({ title, subtitle, showUploadBtn, onUploadSuccess, user_n
     if (!file) return;
 
     setIsUploading(true);
+    const toastId = toast.loading("Initializing upload...");
 
     try {
-      // 1. Get s3 Signed URL
+      toast.loading("Generating S3 signed URL...", { 
+        id: toastId,
+        style: {
+          backgroundColor: '#e0e7ff', 
+          color: '#4338ca',           
+          borderColor: '#4f39f6',      
+          border: '1px solid #4f39f6'
+      }
+      });
+      // 1. Get S3 Signed URL
       const urlRes = await fetch("/api/upload/signed-url", {
         method: "POST",
         body: JSON.stringify({ fileName: file.name, fileType: file.type }),
@@ -34,6 +44,15 @@ export function Header({ title, subtitle, showUploadBtn, onUploadSuccess, user_n
       const { signedUrl, s3Key } = await urlRes.json();
 
       // 2. Upload to S3
+      toast.loading("Uploading PDF to cloud...", { 
+        id: toastId,
+        style: {
+          backgroundColor: '#e0e7ff', 
+          color: '#4338ca',           
+          borderColor: '#4f39f6',      
+          border: '1px solid #4f39f6'
+      }
+      });
       const uploadRes = await fetch(signedUrl, {
         method: "PUT",
         body: file,
@@ -43,6 +62,15 @@ export function Header({ title, subtitle, showUploadBtn, onUploadSuccess, user_n
       if (!uploadRes.ok) throw new Error("S3 Upload Failed");
 
       // 3. Save Document info in DB
+      toast.loading("Processing document...", { 
+        id: toastId,
+        style: {
+          backgroundColor: '#e0e7ff', 
+          color: '#4338ca',           
+          borderColor: '#4f39f6',      
+          border: '1px solid #4f39f6'
+        }
+      });
       const dbRes = await fetch("/api/documents/save", {
         method: "POST",
         body: JSON.stringify({
@@ -54,14 +82,15 @@ export function Header({ title, subtitle, showUploadBtn, onUploadSuccess, user_n
 
       if (!dbRes.ok) throw new Error("Failed to save to DB");
 
-      toast.success('PDF uploaded.');
+      toast.success("Document uploaded successfully!", { id: toastId });
 
       if(onUploadSuccess) {
         onUploadSuccess();
       }
     } catch (error) {
       console.error(error);
-      toast.error("Upload Failed.");
+      // toast.error("Upload Failed.");
+      toast.error("Upload Failed. Please try again.", { id: toastId });
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";

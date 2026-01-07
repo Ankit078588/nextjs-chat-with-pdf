@@ -5,7 +5,6 @@ import { DocumentModel } from "../../../../models/document.model";
 import { UserModel } from "../../../../models/user.model";   
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 
-// LangChain & Pinecone Imports
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";

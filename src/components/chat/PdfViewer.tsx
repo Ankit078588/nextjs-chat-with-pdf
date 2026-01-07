@@ -1,20 +1,19 @@
 import { Loader2, ArrowLeft } from "lucide-react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface PdfViewerProps {
   url: string | null;
 }
 
 export function PdfViewer({ url }: PdfViewerProps) {
-  const router = useRouter();
 
   return (
     <div className="w-1/2 border-r border-slate-200 bg-slate-100 flex flex-col">
       {/* Header */}
       <div className="h-14 border-b border-slate-200 bg-white px-4 flex items-center justify-between shrink-0">
-        <button onClick={() => router.back()} className="cursor-pointer flex items-center gap-2 text-slate-500 hover:text-slate-800 text-sm font-medium transition-colors" >
+        <Link href='/dashboard/chat'  className="cursor-pointer flex items-center gap-2 text-slate-500 hover:text-slate-800 text-sm font-medium transition-colors" >
           <ArrowLeft size={16} /> Back to Library
-        </button>
+        </Link>
         <span className="text-xs font-mono text-slate-400">PDF Viewer</span>
       </div>
 

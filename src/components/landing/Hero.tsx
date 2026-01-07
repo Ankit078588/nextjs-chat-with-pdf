@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import GithubIcon from "@/icons/github";
 
-export const Hero: React.FC = () => {
+const Hero: React.FC = () => {
   return (
     <section className="relative pt-32 pb-16 lg:pt-40 lg:pb-10 overflow-hidden bg-white">
         
@@ -68,3 +68,6 @@ export const Hero: React.FC = () => {
       </section>
   );
 };
+
+
+export default Hero;

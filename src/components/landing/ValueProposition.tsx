@@ -50,4 +50,4 @@ const ValueProposition = () => {
   )
 }
 
-export default ValueProposition
+export default ValueProposition;

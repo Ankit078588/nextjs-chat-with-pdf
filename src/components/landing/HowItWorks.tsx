@@ -1,7 +1,7 @@
 import { FileText } from 'lucide-react';
 import React from 'react';
 
-export const HowItWorks: React.FC = () => {
+const HowItWorks: React.FC = () => {
   return (
     <section className="py-24 px-6 bg-white">
           <div className="max-w-4xl mx-auto">
@@ -56,3 +56,6 @@ export const HowItWorks: React.FC = () => {
       </section>
   );
 };
+
+
+export default HowItWorks;

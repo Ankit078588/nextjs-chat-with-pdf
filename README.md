@@ -75,3 +75,11 @@
 
 
 ---
+SQL injection :
+- --------------------------------
+const username = 'ani';
+const email = 'ani@g.com';
+const password = '1234); DROP TABLE users;';
+
+pgClient.query(`INSERT INTO users (username, email, password) VALUES (${username}, $(email), $(password) );`)
+pgClient.query(`INSERT INTO users (username, email, password) VALUES (ani, ani@g.com, 1234); DROP TABLE users; );`)

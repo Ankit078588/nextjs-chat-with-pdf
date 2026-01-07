@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-:root {
+/* :root {
   --background: #ffffff;
   --foreground: #171717;
 }
@@ -17,7 +17,7 @@
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
+} */
 
 body {
   background: var(--background);
@@ -25,6 +25,5 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 .hero {
-  /* background: linear-gradient(...); */
   animation: float 6s ease-in-out infinite;
 }

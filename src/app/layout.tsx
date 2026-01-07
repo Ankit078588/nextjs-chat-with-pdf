@@ -13,11 +13,11 @@ export const metadata: Metadata = {
 export default function RootLayout({children}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className="bg-slate-50 text-slate-900 antialiased selection:bg-primary-500 selection:text-white">
-      <SessionProvider>
-        <main className="min-h-screen">{children}</main>
-        <Toaster position="top-center" richColors />
-      </SessionProvider>
+      <body className="bg-slate-50 text-slate-900 antialiased selection:bg-primary-500 selection:text-white selection:bg-indigo-500">
+        <SessionProvider>
+          <main className="min-h-screen">{children}</main>
+          <Toaster position="top-center" richColors />
+        </SessionProvider>
       </body>
     </html>
   );

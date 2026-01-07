@@ -1,22 +1,25 @@
-import { FileText, MoreVertical, Trash2, Bot, MessageSquare } from "lucide-react";
+import { FileText, MoreVertical, Trash2, Bot, MessageSquare, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface DocumentCardProps {
-  id: string;
+  id: string; 
   name: string;
   size?: string;
   date?: string;
   variant: "manage" | "chat";
   deleteDoc?: () => void;
   openDoc?: () => void;
+  
+  onStartChat?: (docId: string) => void;
+  isStartingChat?: boolean; 
 }
 
-export function DocumentCard({ id, name, size, date, variant, deleteDoc, openDoc }: DocumentCardProps) {
+export function DocumentCard({ id, name, size, date, variant, deleteDoc, openDoc, onStartChat, isStartingChat }: DocumentCardProps) {
 
   const router = useRouter();
 
   
-  // --- Variant 1: Manage/List Card ---
+  // Variant 1: Manage/List Card 
   if (variant === "manage") {
     return (
       <div  className="group bg-white rounded-xl border border-slate-200 p-5 hover:shadow-md transition-all hover:border-indigo-200 relative">
@@ -46,9 +49,11 @@ export function DocumentCard({ id, name, size, date, variant, deleteDoc, openDoc
     );
   }
 
-  // --- Variant 2: StartChat Card  ---
+
+  
+  // Variant 2: StartChat Card  
   return (
-    <div  className="bg-white rounded-xl border border-slate-200 p-5 hover:border-indigo-500 hover:ring-1 hover:ring-indigo-500 transition-all shadow-sm group">
+    <div className="bg-white rounded-xl border border-slate-200 p-5 hover:border-indigo-500 hover:ring-1 hover:ring-indigo-500 transition-all shadow-sm group">
       <div className="flex items-center gap-4 mb-6">
         <div className="h-10 w-10 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600">
           <Bot size={20} />
@@ -59,9 +64,17 @@ export function DocumentCard({ id, name, size, date, variant, deleteDoc, openDoc
         </div>
       </div>
 
-      <button onClick={() => router.push(`/dashboard/chat/${id}`)} className="cursor-pointer w-full bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white border border-indigo-100 py-2.5 rounded-lg font-medium transition-all flex items-center justify-center gap-2">
-        <MessageSquare size={16} className="group-hover:scale-110 transition-transform"/>
-        Start Chatting
+      <button 
+        onClick={() => onStartChat && onStartChat(id)} 
+        disabled={isStartingChat}
+        className="cursor-pointer w-full bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white border border-indigo-100 py-2.5 rounded-lg font-medium transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+      >
+        {isStartingChat ? (
+            <Loader2 size={16} className="animate-spin" />
+        ) : (
+            <MessageSquare size={16} className="group-hover:scale-110 transition-transform"/>
+        )}
+        {isStartingChat ? "Creating Session..." : "Start Chatting"}
       </button>
     </div>
   );

@@ -33,11 +33,9 @@ export async function GET(req: NextRequest) {
     }
 
     // 3. Find Documents for this user only
-    // .sort({ createdAt: -1 }) ka matlab hai "Latest pehle dikhao"
     const documents = await DocumentModel.find({ userId: user._id }).sort({ createdAt: -1 });
-
     return NextResponse.json({ success: true, documents });
-
+    
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

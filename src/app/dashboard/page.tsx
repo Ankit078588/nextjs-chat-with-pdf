@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Header } from "@/components/dashboard/Header";
 import { DocumentCard } from "@/components/dashboard/DocumentCard";
-import { Loader2, FileWarning } from "lucide-react"; // Icons for empty/loading states
+import { Loader2, FileWarning } from "lucide-react";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 
@@ -48,25 +48,20 @@ export default function MyDocumentsPage() {
 
 
   async function handleOpenDoc(docId: string) {
-    // Loading toast dikha sakte ho agar chaho
     const toastId = toast.loading("Opening document...");
 
     try {
-      // 1. Backend se Signed URL maango
-      const res = await fetch("/api/documents/view", {
+      // 1. Signed URL 
+      const res = await fetch("/api/documents/view/doc-id", {
         method: "POST",
         body: JSON.stringify({ docId }),
         headers: { "Content-Type": "application/json" }
       });
-
       const data = await res.json();
-
       if (!res.ok) throw new Error(data.error || "Failed to get file access");
 
-      // 2. Magic Link mil gaya, ab open karo
       window.open(data.url, "_blank");
       toast.dismiss(toastId);
-
     } catch (error) {
       console.error(error);
       toast.error("Could not open file", { id: toastId });
@@ -74,16 +69,10 @@ export default function MyDocumentsPage() {
   }
 
   async function handleDeleteDoc(id: string) {
-    // 1. Confirmation (Optional but recommended)
-    // const confirmDelete = confirm("Are you sure you want to delete this document?");
-    // if (!confirmDelete) return;
-
-    // Optimistic UI Update: Turant list se hata do (User ko fast feel hoga)
     const previousDocs = [...documents];
     setDocuments((prev) => prev.filter((doc) => doc._id !== id));
 
     try {
-      // 2. API Call
       const res = await fetch(`/api/documents?id=${id}`, { method: "DELETE" });
       if (!res.ok) {
         throw new Error("Failed to delete");

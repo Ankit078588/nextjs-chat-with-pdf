@@ -15,7 +15,7 @@ interface Message {
 
 export default function ChatPage() {
   const params = useParams();
-  const docId = params?.id as string;
+  const chatId = params?.id as string;
 
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -23,22 +23,23 @@ export default function ChatPage() {
 
   // fetch data
   useEffect(() => {
-    if(!docId) return;
+    if(!chatId) return;
 
     const initData = async () => {
       try {
         // 1. Get PDF URL
-        const viewRes = await fetch("/api/documents/view", {
+        const viewRes = await fetch("/api/documents/view/chat-id", {
           method: "POST",
-          body: JSON.stringify({ docId }),
+          body: JSON.stringify({ chatId }),
         });
         const viewData = await viewRes.json();
         if (viewData.success) setPdfUrl(viewData.url);
 
+
         // 2. Get Chat History
         const historyRes = await fetch("/api/chat/history", {
             method: "POST",
-            body: JSON.stringify({ docId }),
+            body: JSON.stringify({ chatId }),
         });
         const historyData = await historyRes.json();
         
@@ -48,13 +49,12 @@ export default function ChatPage() {
             setMessages([{ role: "ai", text: "Hello! I've read your document. Ask me anything about it." }]);
         }
       } catch (error) {
-        console.error(error);
         toast.error("Failed to load document data");
       }
     };
 
     initData();
-  }, [docId]);
+  }, [chatId]);
 
 
   // Send message
@@ -65,10 +65,14 @@ export default function ChatPage() {
     setIsLoading(true);
 
     try {
+      console.log("======= Sending message =========")
       const res = await fetch("/api/chat", {
         method: "POST",
-        body: JSON.stringify({ message: userMessage, docId: docId }),
+        body: JSON.stringify({ message: userMessage, chatId: chatId }),
       });
+
+      console.log("======= Logging response =========")
+      console.log(res);
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed");
@@ -85,23 +89,15 @@ export default function ChatPage() {
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-slate-50">
-      
+
       {/* Left Side: PDF */}
       <PdfViewer url={pdfUrl} />
 
       {/* Right Side: Chat UI */}
       <div className="w-1/2 flex flex-col bg-white h-full">
          <ChatHeader onClear={() => setMessages([])} />
-         
-         <MessageList 
-            messages={messages} 
-            isLoading={isLoading} 
-         />
-         
-         <ChatInput 
-            onSend={handleSend} 
-            isLoading={isLoading} 
-         />
+         <MessageList messages={messages} isLoading={isLoading} />
+         <ChatInput onSend={handleSend} isLoading={isLoading} />
       </div>
 
     </div>

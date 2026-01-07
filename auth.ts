@@ -17,9 +17,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           // get form input values
           const {email, password} = credentials;
           if(!email || !password) return null; 
-
-          console.log('-----');
-          console.log(email, password);
   
           // connectDB
           await connectDB();

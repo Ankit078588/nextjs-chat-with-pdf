@@ -25,6 +25,11 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         enum: ['credentials', 'google', 'github']
+    },
+    customInstructions: { 
+        type: String, 
+        default: "",
+        trim: true
     }
 }, {timestamps: true});
 

@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from '../../../../../auth';
+import { auth } from '../../../../../../auth';
 import { connectDB } from "@/lib/db";
 import { DocumentModel } from "@/models/document.model";
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { ChatModel } from "@/models/chat.model";
 
 const s3 = new S3Client({
   region: process.env.AWS_REGION!,
@@ -13,29 +14,37 @@ const s3 = new S3Client({
   },
 });
 
+
+
 export async function POST(req: NextRequest) {
   try {
     // 1. Auth Check
     const session = await auth();
     if (!session || !session.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const { docId } = await req.json();
+    const { chatId } = await req.json();
+    if (!chatId) return NextResponse.json({ error: "chatId is missing" }, { status: 400 });
     
-
-    // 2. Find Document 
+    // 2. Find docId / chat Document
     await connectDB();
-    const doc = await DocumentModel.findOne({ _id: docId });
+    const ChatSession = await ChatModel.findById(chatId).populate('docId').lean();
+    if(!ChatSession) {
+      return NextResponse.json({ error: "Invalid chat session." }, { status: 401 });
+    }
+
+    // 3. Find PDF Document 
+    const doc = await DocumentModel.findOne({ _id: ChatSession.docId._id.toString() });
     if (!doc) return NextResponse.json({ error: "Document not found" }, { status: 404 });
 
 
-    // 3. Create Signed URL command for READING (GetObject)
+    // 4. Create Signed URL command for READING (GetObject)
     const command = new GetObjectCommand({
       Bucket: process.env.AWS_BUCKET_NAME,
       Key: doc.fileKey, 
     });
 
 
-    // 4. Generate signed URL - validity 30 mins
+    // 5. Generate signed URL - validity 30 mins
     const signedUrl = await getSignedUrl(s3, command, { expiresIn: 1800 });
 
     return NextResponse.json({ success: true, url: signedUrl });
