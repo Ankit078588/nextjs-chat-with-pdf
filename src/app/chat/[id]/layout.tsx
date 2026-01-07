@@ -9,7 +9,7 @@ export default async function ChatLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   // 1. Auth Check
   const session = await auth();
