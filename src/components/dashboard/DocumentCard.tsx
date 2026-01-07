@@ -74,7 +74,7 @@ export function DocumentCard({ id, name, size, date, variant, deleteDoc, openDoc
         ) : (
             <MessageSquare size={16} className="group-hover:scale-110 transition-transform"/>
         )}
-        {isStartingChat ? "Creating Session..." : "Start Chatting"}
+        {isStartingChat ? "Creating Chat Session..." : "Start Chatting"}
       </button>
     </div>
   );
